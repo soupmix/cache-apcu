@@ -1,0 +1,34 @@
+{
+  "name": "soupmix/cache-apcu",
+  "type": "library",
+  "description": "Framework agnostic APCu adapter for SimpleCache Interface.",
+  "keywords": ["cache", "adapters", "simplecache", "apcu"],
+  "homepage": "https://github.com/soupmix/cache-apcu",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mehmet Korkmaz",
+      "email": "mehmet@mkorkmaz.com",
+      "homepage": "https://mkorkmaz.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6",
+    "ext-apcu": "*",
+    "soupmix/cache-base": "~0.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Soupmix\\Cache\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8"
+  },
+  "scripts": {
+    "test": [
+      "php vendor/bin/phpunit"
+    ],
+    "phpunit": "php vendor/bin/phpunit"
+  }
+}
