@@ -6,9 +6,7 @@ php:
   - 7.0
 
 before_script:
-  - pecl channel-update pecl.php.net
-  - echo "no" | pecl install apcu
-  - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+
   - composer install -n
 
 script:

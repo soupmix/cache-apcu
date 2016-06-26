@@ -13,6 +13,7 @@ class ACPUCacheTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
 
+        var_dump(ini_get(("apc.enabled_cli")));
         $this->client = new Soupmix\Cache\APCUCache();
     }
 
