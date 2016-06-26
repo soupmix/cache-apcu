@@ -1,5 +1,9 @@
 # .scrutinizer.yml
-
+tools:
+  php_analyzer:
+    extensions:
+      - php
+      - apcu
 checks:
   php:
     code_rating: true
