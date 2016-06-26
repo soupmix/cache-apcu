@@ -7,13 +7,11 @@ php:
 
 before_script:
   - pecl channel-update pecl.php.net
-  - echo "no" | pecl install acpu-4.0.11
+  - echo "no" | pecl install acpu
   - echo "extension = apcu.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "apc.enable=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
-
   - composer install -n
-
 script:
   - vendor/bin/phpunit --coverage-clover=coverage.clover
 after_script:
