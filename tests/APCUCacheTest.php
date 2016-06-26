@@ -6,13 +6,12 @@ use Soupmix;
 class ACPUCacheTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \Soupmix\Cache\MemcachedCache $client
+     * @var \Soupmix\Cache\APCUCache $client
      */
     protected $client = null;
 
     protected function setUp()
     {
-       
 
         $this->client = new Soupmix\Cache\APCUCache();
     }
