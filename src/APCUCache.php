@@ -6,8 +6,6 @@ namespace Soupmix\Cache;
 class APCUCache implements CacheInterface
 {
 
-
-
     /**
      * Fetch a value from the cache.
      *
@@ -30,7 +28,8 @@ class APCUCache implements CacheInterface
      *
      * @return bool True on success and false on failure
      */
-    public function set($key, $value, $ttl = null){
+    public function set($key, $value, $ttl = null)
+    {
         return apcu_store($key, $value, intval($ttl));
     }
     /**
@@ -40,7 +39,8 @@ class APCUCache implements CacheInterface
      *
      * @return bool True on success and false on failure
      */
-    public function delete($key){
+    public function delete($key)
+    {
         return (bool) apcu_delete($key);
     }
     /**
@@ -48,7 +48,8 @@ class APCUCache implements CacheInterface
      *
      * @return bool True on success and false on failure
      */
-    public function clear(){
+    public function clear()
+    {
         return apcu_clear_cache();
     }
     /**
@@ -60,11 +61,7 @@ class APCUCache implements CacheInterface
      */
     public function getMultiple($keys)
     {
-        $ret = [];
-        foreach ($keys as $key){
-            $ret[$key] = apcu_fetch($key);
-        }
-        return $ret;
+        return  apcu_fetch($keys);
     }
     /**
      * Persisting a set of key => value pairs in the cache, with an optional TTL.
@@ -77,11 +74,8 @@ class APCUCache implements CacheInterface
      */
     public function setMultiple($items, $ttl = null)
     {
-        $ret = true;
-        foreach ($items as $key => $value){
-            $ret = $ret && $this->set($key, $value, $ttl);
-        }
-        return $ret;
+        $result =  $this->set($items, null ,$ttl);
+        return empty($result);
     }
     /**
      * Delete multiple cache items in a single operation
