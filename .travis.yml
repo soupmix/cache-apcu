@@ -13,8 +13,10 @@ before_script:
   - echo "apc.enable_cli=1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - composer install -n
 script:
-  - vendor/bin/phpunit --coverage-clover=coverage.clover
+  - phpunit --coverage-clover build/logs/clover.xml
+
 after_script:
   - if [ $TRAVIS_PHP_VERSION = '7.0' ]; then php vendor/bin/coveralls; fi
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage.clover
+
+after_success:
+  - travis_retry php vendor/bin/coveralls -v
