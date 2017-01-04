@@ -9,11 +9,11 @@
 It's recommended that you use [Composer](https://getcomposer.org/) to install Soupmix Cache APCu Adaptor.
 
 ```bash
-$ composer require soupmix/cache-apcu "~0.1"
+$ composer require soupmix/cache-apcu "~0.2"
 ```
 
 ### Connection
-```
+```php
 require_once '/path/to/composer/vendor/autoload.php';
 
 
