@@ -25,6 +25,9 @@ class APCUCache implements CacheInterface
     public function set($key, $value, $ttl = null)
     {
         $this->checkReservedCharacters($key);
+        if ($ttl instanceof DateInterval) {
+            $ttl = (new DateTime('now'))->add($ttl)->getTimeStamp() - time();
+        }
         return apcu_store($key, $value, (int) $ttl);
     }
 
@@ -50,7 +53,7 @@ class APCUCache implements CacheInterface
     public function getMultiple($keys, $default = null)
     {
         $defaults = array_fill(0, count($keys), $default);
-        foreach ($keys as $key){
+        foreach ($keys as $key) {
             $this->checkReservedCharacters($key);
         }
         return array_merge(apcu_fetch($keys), $defaults);
@@ -61,10 +64,13 @@ class APCUCache implements CacheInterface
      */
     public function setMultiple($values, $ttl = null)
     {
-        foreach ($values as $key => $value ){
+        foreach ($values as $key => $value) {
             $this->checkReservedCharacters($key);
         }
-        $result =  apcu_store($values, null , $ttl);
+        if ($ttl instanceof DateInterval) {
+            $ttl = (new DateTime('now'))->add($ttl)->getTimeStamp() - time();
+        }
+        $result =  apcu_store($values, null, $ttl);
         return empty($result);
     }
 
@@ -74,7 +80,7 @@ class APCUCache implements CacheInterface
     public function deleteMultiple($keys)
     {
         $ret = [];
-        foreach ($keys as $key ){
+        foreach ($keys as $key) {
             $this->checkReservedCharacters($key);
             $ret[$key] = apcu_delete($key);
         }
@@ -96,7 +102,8 @@ class APCUCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function has($key) {
+    public function has($key)
+    {
         $this->checkReservedCharacters($key);
         return apcu_exists($key);
     }
