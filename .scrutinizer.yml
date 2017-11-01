@@ -11,11 +11,11 @@ checks:
     duplication: true
 build:
   environment:
-    php: '5.6'
+    php: '7.1'
   tests:
     override:
       -
-        command: 'phpunit --coverage-clover=.soupmix_coverage'
+        command: 'vendor/bin/phpunit --coverage-clover=.soupmix_coverage'
         coverage:
           file: '.soupmix_coverage'
           format: 'clover'
