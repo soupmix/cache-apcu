@@ -1,17 +1,12 @@
 # .scrutinizer.yml
-tools:
-  external_code_coverage: true
-  php_analyzer:
-    extensions:
-      - php
-      - apcu
 checks:
-  php:
-    code_rating: true
-    duplication: true
+  php: true
 build:
   environment:
-    php: '7.1'
+    php:
+      version: 7.1
+      ini:
+        apc.enable_cli: "1"
   tests:
     override:
       -
