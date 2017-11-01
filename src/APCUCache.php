@@ -4,6 +4,8 @@ namespace Soupmix\Cache;
 
 use Soupmix\Cache\Exceptions\InvalidArgumentException;
 use Psr\SimpleCache\CacheInterface;
+use DateInterval;
+use DateTime;
 
 class APCUCache implements CacheInterface
 {

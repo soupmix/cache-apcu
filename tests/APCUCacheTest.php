@@ -2,8 +2,10 @@
 namespace tests;
 
 use Soupmix;
+use PHPUnit\Framework\TestCase;
+use DateInterval;
 
-class ACPUCacheTest extends \PHPUnit_Framework_TestCase
+class ACPUCacheTest extends TestCase
 {
     /**
      * @var \Soupmix\Cache\APCUCache $client
@@ -17,10 +19,10 @@ class ACPUCacheTest extends \PHPUnit_Framework_TestCase
 
     public function testSetGetAndDeleteAnItem()
     {
-        $ins1 = $this->client->set('test1','value1');
+        $ins1 = $this->client->set('test1', 'value1', new DateInterval('PT60S'));
         $this->assertTrue($ins1);
         $value1 = $this->client->get('test1');
-        $this->assertEquals('value1',$value1);
+        $this->assertEquals('value1', $value1);
         $delete = $this->client->delete('test1');
         $this->assertTrue($delete);
     }
@@ -33,7 +35,7 @@ class ACPUCacheTest extends \PHPUnit_Framework_TestCase
             'test3' => 'value3',
             'test4' => 'value4'
         ];
-        $insMulti = $this->client->setMultiple($cacheData);
+        $insMulti = $this->client->setMultiple($cacheData, new DateInterval('PT60S'));
         $this->assertTrue($insMulti);
 
         $getMulti = $this->client->getMultiple(array_keys($cacheData));
@@ -66,9 +68,36 @@ class ACPUCacheTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $counter_d_0);
     }
 
-    public function testClear(){
+    public function testHasItem()
+    {
+        $has = $this->client->has('has');
+        $this->assertFalse($has);
+        $this->client->set('has', 'value');
+        $has = $this->client->has('has');
+        $this->assertTrue($has);
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     */
+    public function failForReservedCharactersInKeyNames()
+    {
+        $this->client->set('@key', 'value');
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     */
+    public function failForInvalidStringInKeyNames()
+    {
+        $this->client->set(1, 'value');
+    }
+
+    public function testClear()
+    {
         $clear = $this->client->clear();
         $this->assertTrue($clear);
     }
-
 }
