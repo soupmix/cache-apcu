@@ -1,23 +1,30 @@
 <?php
-namespace tests;
+namespace Soupmix\Cache\Tests;
 
+use Psr\SimpleCache\InvalidArgumentException;
 use Soupmix;
 use PHPUnit\Framework\TestCase;
 use DateInterval;
+use Soupmix\Cache\APCUCache;
+use Psr\SimpleCache\CacheInterface;
 
-class ACPUCacheTest extends TestCase
+class APCUCacheTest extends TestCase
 {
     /**
-     * @var \Soupmix\Cache\APCUCache $client
+     * @var $client CacheInterface
      */
-    protected $client = null;
+    protected $client;
 
-    protected function setUp()
+    protected function setUp() : void
     {
-        $this->client = new Soupmix\Cache\APCUCache();
+        $this->client = new APCUCache();
+        $this->client->clear();
     }
 
-    public function testSetGetAndDeleteAnItem()
+    /**
+     * @test
+     */
+    public function shouldSetGetAndDeleteAnItemSuccessfully() : void
     {
         $ins1 = $this->client->set('test1', 'value1', new DateInterval('PT60S'));
         $this->assertTrue($ins1);
@@ -27,7 +34,7 @@ class ACPUCacheTest extends TestCase
         $this->assertTrue($delete);
     }
 
-    public function testSetGetAndDeleteMultipleItems()
+    public function testSetGetAndDeleteMultipleItems() : void
     {
         $cacheData = [
             'test1' => 'value1',
@@ -51,7 +58,7 @@ class ACPUCacheTest extends TestCase
         }
     }
 
-    public function testIncrementAndDecrementACounterItem()
+    public function testIncrementAndDecrementACounterItem() : void
     {
         $this->client->set('counter', 0);
         $counter_i_1 = $this->client->increment('counter', 1);
@@ -68,7 +75,7 @@ class ACPUCacheTest extends TestCase
         $this->assertEquals(0, $counter_d_0);
     }
 
-    public function testHasItem()
+    public function testHasItem() : void
     {
         $has = $this->client->has('has');
         $this->assertFalse($has);
@@ -79,23 +86,23 @@ class ACPUCacheTest extends TestCase
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
-    public function failForReservedCharactersInKeyNames()
+    public function failForReservedCharactersInKeyNames() : void
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->client->set('@key', 'value');
     }
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
-    public function failForInvalidStringInKeyNames()
+    public function failForInvalidStringInKeyNames() : void
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->client->set(1, 'value');
     }
 
-    public function testClear()
+    public function testClear() : void
     {
         $clear = $this->client->clear();
         $this->assertTrue($clear);

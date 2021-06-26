@@ -7,9 +7,16 @@ use Psr\SimpleCache\CacheInterface;
 use DateInterval;
 use DateTime;
 
+use function apcu_fetch;
+use function apcu_store;
+use function apcu_delete;
+use function apcu_clear_cache;
+use function apcu_dec;
+use function apcu_inc;
+
 class APCUCache implements CacheInterface
 {
-    const PSR16_RESERVED_CHARACTERS = ['{','}','(',')','/','@',':'];
+    private const PSR16_RESERVED_CHARACTERS = ['{','}','(',')','/','@',':'];
 
     /**
      * {@inheritDoc}
@@ -24,7 +31,7 @@ class APCUCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function set($key, $value, $ttl = null)
+    public function set($key, $value, $ttl = null) : bool
     {
         $this->checkReservedCharacters($key);
         if ($ttl instanceof DateInterval) {
@@ -36,7 +43,7 @@ class APCUCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function delete($key)
+    public function delete($key) : bool
     {
         $this->checkReservedCharacters($key);
         return (bool) apcu_delete($key);
@@ -45,7 +52,7 @@ class APCUCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function clear()
+    public function clear() : bool
     {
         return apcu_clear_cache();
     }
@@ -64,7 +71,7 @@ class APCUCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function setMultiple($values, $ttl = null)
+    public function setMultiple($values, $ttl = null) : bool
     {
         foreach ($values as $key => $value) {
             $this->checkReservedCharacters($key);
@@ -79,7 +86,7 @@ class APCUCache implements CacheInterface
     /**
      * {@inheritDoc}
      */
-    public function deleteMultiple($keys)
+    public function deleteMultiple($keys) : array
     {
         $ret = [];
         foreach ($keys as $key) {
@@ -110,7 +117,7 @@ class APCUCache implements CacheInterface
         return apcu_exists($key);
     }
 
-    private function checkReservedCharacters($key)
+    private function checkReservedCharacters($key) : void
     {
         if (!is_string($key)) {
             $message = sprintf('key %s is not a string.', $key);

@@ -13,22 +13,27 @@
     }
   ],
   "require": {
-    "php": ">=7.1",
+    "php": "^7.3|^8.0",
     "ext-apcu": "*",
-    "soupmix/cache-base": "~0.2"
+    "soupmix/cache-base": "^1.0"
   },
   "provide": {
-    "psr/simple-cache-implementation": "~1.0"
+    "psr/simple-cache-implementation": "^1.0.1"
   },
   "autoload": {
     "psr-4": {
       "Soupmix\\Cache\\": "src/"
     }
   },
+  "autoload-dev": {
+    "psr-4": {
+      "Soupmix\\Cache\\Tests\\": "tests/"
+    }
+  },
   "require-dev": {
-    "phpunit/phpunit": "~6.0",
-    "satooshi/php-coveralls": "~1.0",
-    "phpunit/phpcov": "~4.0"
+    "phpunit/phpunit": "^9.5",
+    "php-coveralls/php-coveralls": "^2.4",
+    "phpunit/phpcov": "^8.2"
   },
   "scripts": {
     "test": [
